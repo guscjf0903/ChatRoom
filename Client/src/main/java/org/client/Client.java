@@ -1,4 +1,6 @@
-package org.example;
+package org.client;
+
+import org.share.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -13,14 +15,17 @@ public class Client {
     public void start() {
         Socket socket = null;
         BufferedReader in;
-        Message
+        SendType sendType;
+
         Scanner scanner = new Scanner(System.in);
         try {
             socket = new Socket("localhost", 8000);
             System.out.println("[Server connection successful]");
             System.out.print("Please enter your name : ");
             String name = scanner.nextLine();
-            Thread clientThread = new ClientThread(socket, name);
+            sendType = new SendType();
+            sendType.makePacket(name);
+            Thread clientThread = new ClientThread(socket, sendType);
             clientThread.start();
 
             in = new BufferedReader(new InputStreamReader(socket.getInputStream())); // 서버에서 온 메세지

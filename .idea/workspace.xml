@@ -4,20 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8cb11a1f-b805-43e0-9d0e-0abccdc3f7b8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Client/src/main/java/org/example/ClientThread.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/example/ServerThread.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Share/src/main/java/org/example/Message.java" afterDir="false" />
+    <list default="true" id="8cb11a1f-b805-43e0-9d0e-0abccdc3f7b8" name="Changes" comment="Message 공유 안됨.">
+      <change afterPath="$PROJECT_DIR$/Client/src/main/java/org/client/ClientThread.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/server/ServerThread.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Share/src/main/java/org/share/Packet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Share/src/main/java/org/share/SendType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/org/example/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/org/example/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/org/example/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/org/example/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Share/src/main/java/org/example/Share.java" beforeDir="false" afterPath="$PROJECT_DIR$/Share/src/main/java/org/example/Share.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/org/example/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/org/client/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Client/src/main/java/org/example/ClientThread.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/org/example/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/org/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/org/example/ServerThread.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Share/src/main/java/org/example/Message.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Share/src/main/java/org/example/Share.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/server/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,29 +83,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "File.Encoding",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/guscj/바탕 화면/Backends/Intellij/ChatRoom&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;File.Encoding&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveInnerDialog.RECENTS_KEY">
       <recent name="org.example" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.share" />
       <recent name="org.example" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -112,11 +116,11 @@
   </component>
   <component name="RunManager" selected="Application.Client">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.example.Client" />
+      <option name="MAIN_CLASS_NAME" value="org.client.Client" />
       <module name="ChatRoom.Client.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="org.client.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -124,12 +128,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.example.Main" />
-      <module name="ChatRoom.main" />
+    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.server.Server" />
+      <module name="ChatRoom.Server.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="org.server.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -137,39 +141,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Share" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.example.Share" />
-      <module name="ChatRoom.Share.main" />
+    <configuration name="org.server.Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.server.Server" />
+      <module name="ChatRoom.Server.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.example.*" />
+          <option name="PATTERN" value="org.server.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
-    </configuration>
-    <configuration name="ChatRoom [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
     </configuration>
     <configuration name="ChatRoom [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -192,13 +175,32 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="ChatRoom" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list />
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Share" />
         <item itemvalue="Application.Client" />
-        <item itemvalue="Application.Main" />
-        <item itemvalue="Gradle.ChatRoom [build]" />
+        <item itemvalue="Application.org.server.Server" />
         <item itemvalue="Gradle.ChatRoom [clean]" />
+        <item itemvalue="Application.Server" />
+        <item itemvalue="Gradle.ChatRoom" />
       </list>
     </recent_temporary>
   </component>
@@ -210,8 +212,21 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1686500427044</updated>
-      <workItem from="1686500428762" duration="14562000" />
+      <workItem from="1686500428762" duration="31431000" />
+      <workItem from="1686720427458" duration="12523000" />
+      <workItem from="1686805720026" duration="10370000" />
+      <workItem from="1686833057856" duration="1298000" />
+      <workItem from="1686917676268" duration="1167000" />
+      <workItem from="1686919573920" duration="8477000" />
     </task>
+    <task id="LOCAL-00001" summary="Message 공유 안됨.">
+      <created>1686557879472</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1686557879472</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,5 +242,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Message 공유 안됨." />
+    <option name="LAST_COMMIT_MESSAGE" value="Message 공유 안됨." />
   </component>
 </project>
