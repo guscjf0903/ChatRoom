@@ -4,22 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8cb11a1f-b805-43e0-9d0e-0abccdc3f7b8" name="Changes" comment="Message 공유 안됨.">
-      <change afterPath="$PROJECT_DIR$/Client/src/main/java/org/client/ClientThread.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Server/src/main/java/org/server/ServerThread.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Share/src/main/java/org/share/Packet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Share/src/main/java/org/share/SendType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="8cb11a1f-b805-43e0-9d0e-0abccdc3f7b8" name="Changes" comment="Server 생성후 Client 접속 시 &#10;Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: org/share/SendType&#10;에러 발생">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/org/example/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/Client/src/main/java/org/client/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Client/src/main/java/org/example/ClientThread.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/org/example/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/org/server/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/org/example/ServerThread.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Share/src/main/java/org/example/Message.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Share/src/main/java/org/example/Share.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/server/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +58,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -88,7 +81,9 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;TODO_SCOPE&quot;: &quot;All Places&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;corretto-17&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/guscj/바탕 화면/Backends/Intellij/ChatRoom&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -114,7 +109,7 @@
       <recent name="org.example" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client">
+  <component name="RunManager" selected="Application.Server">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.client.Client" />
       <module name="ChatRoom.Client.main" />
@@ -128,28 +123,9 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="Server" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="org.server.Server" />
       <module name="ChatRoom.Server.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.server.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="org.server.Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.server.Server" />
-      <module name="ChatRoom.Server.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.server.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -180,7 +156,7 @@
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -194,13 +170,17 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.Server" />
+      <item itemvalue="Application.Client" />
+      <item itemvalue="Gradle.ChatRoom" />
+      <item itemvalue="Gradle.ChatRoom [clean]" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Client" />
-        <item itemvalue="Application.org.server.Server" />
-        <item itemvalue="Gradle.ChatRoom [clean]" />
-        <item itemvalue="Application.Server" />
         <item itemvalue="Gradle.ChatRoom" />
+        <item itemvalue="Gradle.ChatRoom [clean]" />
       </list>
     </recent_temporary>
   </component>
@@ -217,7 +197,13 @@
       <workItem from="1686805720026" duration="10370000" />
       <workItem from="1686833057856" duration="1298000" />
       <workItem from="1686917676268" duration="1167000" />
-      <workItem from="1686919573920" duration="8477000" />
+      <workItem from="1686919573920" duration="10713000" />
+      <workItem from="1686990638861" duration="14241000" />
+      <workItem from="1687073649595" duration="23000" />
+      <workItem from="1687088567172" duration="12000" />
+      <workItem from="1687088588900" duration="28000" />
+      <workItem from="1687088624370" duration="578000" />
+      <workItem from="1687089324016" duration="1086000" />
     </task>
     <task id="LOCAL-00001" summary="Message 공유 안됨.">
       <created>1686557879472</created>
@@ -226,7 +212,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686557879472</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Server 생성후 Client 접속 시 &#10;Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: org/share/SendType&#10;에러 발생">
+      <created>1686988026399</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1686988026399</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,9 +228,36 @@
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
-        <entry key="MAIN">
+        <entry key="22bde278-2c5f-4060-8881-6925f417a308">
           <value>
             <State />
+          </value>
+        </entry>
+        <entry key="3b7646f5-4a25-467c-904c-b3062aa86d87">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="7eeafd18-d06d-4da6-8f30-14129b995016">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="NewPaketTest" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -245,6 +265,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Message 공유 안됨." />
-    <option name="LAST_COMMIT_MESSAGE" value="Message 공유 안됨." />
+    <MESSAGE value="Server 생성후 Client 접속 시 &#10;Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: org/share/SendType&#10;에러 발생" />
+    <option name="LAST_COMMIT_MESSAGE" value="Server 생성후 Client 접속 시 &#10;Exception in thread &quot;main&quot; java.lang.NoClassDefFoundError: org/share/SendType&#10;에러 발생" />
   </component>
 </project>
