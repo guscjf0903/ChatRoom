@@ -1,22 +1,16 @@
 package org.share;
 
-enum MessageType{
-    CONNECT,
-    DISCONNECT,
-    SEND
-}
-
-public abstract class Packet{
-    String name;
-    final public void makePacket(String name){
-        makename(name);
-        packetType();
+public class Packet{ // 바디와 헤더를 한꺼번에 저장하고 있는 클래스.
+    private PacketHeader header;
+    private PacketBody body;
+    public Packet(PacketHeader header, PacketBody body){
+        this.header = header;
+        this.body = body;
     }
-    abstract void packetType();
-    private void makename(String name){
-        this.name = name;
+    public PacketHeader getHeader(){
+        return header;
     }
-    public String returnname(){
-        return name;
+    public PacketBody getBody(){
+        return body;
     }
 }

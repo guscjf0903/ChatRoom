@@ -15,17 +15,19 @@ public class Client {
     public void start() {
         Socket socket = null;
         BufferedReader in;
-        SendType sendType;
-
+        Packet packet = null;
+        PacketHeader packetHeader = null;
+        PacketBody packetBody = null;
         Scanner scanner = new Scanner(System.in);
         try {
             socket = new Socket("localhost", 8000);
             System.out.println("[Server connection successful]");
             System.out.print("Please enter your name : ");
             String name = scanner.nextLine();
-            sendType = new SendType();
-            sendType.makePacket(name);
-            Thread clientThread = new ClientThread(socket, sendType);
+            packetHeader = new PacketHeader(name);
+            packetBody = new PacketBody();
+            packet = new Packet(packetHeader,packetBody);
+            Thread clientThread = new ClientThread(socket, packet);
             clientThread.start();
 
             in = new BufferedReader(new InputStreamReader(socket.getInputStream())); // 서버에서 온 메세지

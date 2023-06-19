@@ -1,5 +1,6 @@
 package org.server;
 
+import org.share.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -28,13 +29,15 @@ public class ServerThread extends Thread {
     @Override
     public void run() {
         String name = null;
+        Packet receivedPacket = null;
         try {
-            name = (String)in.readObject(); // 최초1회는 클라이언트 이름 수신
+            receivedPacket = (Packet)in.readObject(); // 최초1회는 클라이언트 이름 수신
+            name = receivedPacket.getHeader().getSender(); // 닉네임 가져오기.
             System.out.println("[" + name + " Connected]");
             sendAll("[" + name + "] has entered."); //모두에게 보내기
 
             while (in != null) { // 다음 대화내용 받아내기.
-                String inputMsg = (String)in.readObject();
+                String inputMsg = receivedPacket.getBody().getMessage();
                 if ("quit".equals(inputMsg)) break; //quit가 들어오면 while문 벗어남
                 sendAll(name + ">>" + inputMsg); //대화내용 출력
             }
