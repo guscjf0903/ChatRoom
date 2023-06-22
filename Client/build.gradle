@@ -21,7 +21,8 @@ test {
 
 
 jar {
-        manifest {
+    finalizedBy shadowJar
+    manifest {
             attributes(
                     'Main-Class': 'org.client.Client'
             )

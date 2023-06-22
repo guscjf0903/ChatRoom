@@ -1,6 +1,7 @@
 package org.share;
+import java.io.Serializable;
 
-public class PacketHeader {
+public class PacketHeader implements Serializable {
     private String sender;
     public PacketHeader(String sender){
         this.sender = sender;

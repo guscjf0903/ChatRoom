@@ -14,30 +14,30 @@ public class Client {
 
     public void start() {
         Socket socket = null;
-        BufferedReader in;
-        Packet packet = null;
-        PacketHeader packetHeader = null;
-        PacketBody packetBody = null;
+        ObjectInputStream in;
+        Packet sendPacket = null;
+        Packet receivePacket = null;
         Scanner scanner = new Scanner(System.in);
         try {
             socket = new Socket("localhost", 8000);
             System.out.println("[Server connection successful]");
             System.out.print("Please enter your name : ");
             String name = scanner.nextLine();
-            packetHeader = new PacketHeader(name);
-            packetBody = new PacketBody();
-            packet = new Packet(packetHeader,packetBody);
-            Thread clientThread = new ClientThread(socket, packet);
+            sendPacket = new Packet(new PacketHeader(name),new PacketBody());
+            Thread clientThread = new ClientThread(socket, sendPacket);
             clientThread.start();
 
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream())); // 서버에서 온 메세지
-
-            while (in != null) {
-                String inputMsg = in.readLine();
-                if (inputMsg == null ||("["+name+"]has left the chatroom.").equals(inputMsg)) break; //서버에서 보낸 나가기가 뜬다면 while문 탈출
-                System.out.println("From:" + inputMsg); //서버에서 보낸 메세지 읽기
+            in = new ObjectInputStream(socket.getInputStream()); // 서버에서 온 메세지
+            while (true) {
+                receivePacket = (Packet) in.readObject();
+                if(receivePacket != null){
+                    String inputMsg = receivePacket.getBody().getMessage();
+                    String inputname = receivePacket.getHeader().getSender();
+                    if ((inputname +" has left the chatroom.").equals(inputMsg)) break; //서버에서 보낸 나가기가 뜬다면 while문 탈출
+                    System.out.println("From " + inputname + ": " + inputMsg); //서버에서 보낸 메세지 읽기
+                }
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println("[IOException]");
         } finally {
             try {

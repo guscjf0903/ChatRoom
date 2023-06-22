@@ -26,11 +26,13 @@ public class ClientThread extends Thread {
             out.flush();
             while (true) { //채팅방 시작.
                 message = scanner.nextLine();
-                packet.getBody().setMessage(message);
-                out.writeObject(packet);
-                out.flush();
-                if ("quit".equals(message)){
-                    break;
+                if(message != null){
+                    packet.getBody().setMessage(message);
+                    out.writeObject(packet);
+                    out.flush();
+                    if ("quit".equals(message)){
+                        break;
+                    }
                 }
             }
         } catch (IOException e) {

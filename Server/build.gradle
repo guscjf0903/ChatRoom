@@ -19,6 +19,7 @@ test {
     useJUnitPlatform()
 }
 jar {
+    finalizedBy shadowJar
     manifest {
         attributes(
                 'Main-Class': 'org.server.Server'

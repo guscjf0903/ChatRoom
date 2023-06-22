@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 version '1.0-SNAPSHOT'
@@ -18,6 +19,8 @@ subprojects {
     group = 'org.example'
     version = '1.0-SNAPSHOT'
     apply plugin: 'java'
+    apply plugin: 'com.github.johnrengelman.shadow'
+
 
     configurations {
         compileOnly {
@@ -35,6 +38,7 @@ subprojects {
         useJUnitPlatform()
     }
 }
+
 
 project(':Client'){
     dependencies {
