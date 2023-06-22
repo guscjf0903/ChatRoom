@@ -23,17 +23,17 @@ public class Client {
             System.out.println("[Server connection successful]");
             System.out.print("Please enter your name : ");
             String name = scanner.nextLine();
-            sendPacket = new Packet(new PacketHeader(name),new PacketBody());
+            sendPacket = new Packet(new PacketHeader(name), new PacketBody());
             Thread clientThread = new ClientThread(socket, sendPacket);
             clientThread.start();
 
             in = new ObjectInputStream(socket.getInputStream()); // 서버에서 온 메세지
             while (true) {
                 receivePacket = (Packet) in.readObject();
-                if(receivePacket != null){
+                if (receivePacket != null) {
                     String inputMsg = receivePacket.getBody().getMessage();
                     String inputname = receivePacket.getHeader().getSender();
-                    if ((inputname +" has left the chatroom.").equals(inputMsg)) break; //서버에서 보낸 나가기가 뜬다면 while문 탈출
+                    if ((inputname + " has left the chatroom.").equals(inputMsg)) break; //서버에서 보낸 나가기가 뜬다면 while문 탈출
                     System.out.println("From " + inputname + ": " + inputMsg); //서버에서 보낸 메세지 읽기
                 }
             }

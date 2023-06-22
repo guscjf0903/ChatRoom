@@ -17,6 +17,7 @@ public class ClientThread extends Thread {
         this.socket = socket;
         this.packet = packet;
     }
+
     @Override
     public void run() {
         try {
@@ -26,11 +27,11 @@ public class ClientThread extends Thread {
             out.flush();
             while (true) { //채팅방 시작.
                 message = scanner.nextLine();
-                if(message != null){
+                if (message != null) {
                     packet.getBody().setMessage(message);
                     out.writeObject(packet);
                     out.flush();
-                    if ("quit".equals(message)){
+                    if ("quit".equals(message)) {
                         break;
                     }
                 }

@@ -9,12 +9,13 @@ public class Server {
         Server server = new Server();
         server.start();
     }
-    public void start(){
+
+    public void start() {
         ServerSocket serverSocket = null;
         Socket socket = null;
         try {
             serverSocket = new ServerSocket(8000); // 포트번호와 서버 소켓 생성
-            while(true) {
+            while (true) {
                 System.out.println("[Client Waiting]");
                 socket = serverSocket.accept(); //클라이언트 연결 수락
                 //연결이 들어올때마다 새로운 소켓 생성
@@ -22,14 +23,14 @@ public class Server {
                 ServerThread ServerThread = new ServerThread(socket);
                 ServerThread.start();
             }
-            } catch(IOException e) {
-                e.printStackTrace();
-            }finally {
-            if(serverSocket != null){ //서버가 null이면 서버종료
-                try{
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (serverSocket != null) { //서버가 null이면 서버종료
+                try {
                     serverSocket.close();
                     System.out.println("[Server Shutdown]");
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                     System.out.println("[Server socket error]");
                 }
