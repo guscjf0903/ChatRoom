@@ -15,20 +15,21 @@ public class ClientThread extends Thread {
 
     public ClientThread(Socket socket, Packet packet) {
         this.socket = socket;
-        this.packet = packet;
+        this.packet = packet; // 처음 커넥트 타입을 패킷.
     }
 
     @Override
     public void run() {
         try {
             String message = null;
+            String name = packet.getBody().getNickname();
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream()); // 서버에게 객체 자체를 전송하기 위한 메서드
-            out.writeObject(packet); //처음 1회 이름만 전송
+            out.writeObject(packet); //처음 1회 이름과 커넥트타입 전송
             out.flush();
             while (true) { //채팅방 시작.
                 message = scanner.nextLine();
                 if (message != null) {
-                    packet.getBody().setMessage(message);
+                    packet = new Packet(PacketType.CLIENT, message, name);
                     out.writeObject(packet);
                     out.flush();
                     if ("quit".equals(message)) {

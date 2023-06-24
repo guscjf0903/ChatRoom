@@ -3,13 +3,18 @@ package org.share;
 import java.io.Serializable;
 
 public class PacketHeader implements Serializable {
-    private String sender;
+    private PacketType packetType;
+    private int messageLength;
 
-    public PacketHeader(String sender) {
-        this.sender = sender;
+    public PacketHeader(PacketType packetType,int messageLength) {
+        this.packetType = packetType;
+        this.messageLength = messageLength;
     }
 
-    public String getSender() {
-        return sender;
+    public PacketType getType() {
+        return packetType;
+    }
+    public int getMessageLength() {
+        return messageLength;
     }
 }

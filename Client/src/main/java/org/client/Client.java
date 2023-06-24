@@ -20,10 +20,9 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         try {
             socket = new Socket("localhost", 8000);
-            System.out.println("[Server connection successful]");
             System.out.print("Please enter your name : ");
             String name = scanner.nextLine();
-            sendPacket = new Packet(new PacketHeader(name), new PacketBody());
+            sendPacket = new Packet(PacketType.CONNECT, "", name);
             Thread clientThread = new ClientThread(socket, sendPacket);
             clientThread.start();
 
@@ -31,10 +30,14 @@ public class Client {
             while (true) {
                 receivePacket = (Packet) in.readObject();
                 if (receivePacket != null) {
-                    String inputMsg = receivePacket.getBody().getMessage();
-                    String inputname = receivePacket.getHeader().getSender();
-                    if ((inputname + " has left the chatroom.").equals(inputMsg)) break; //서버에서 보낸 나가기가 뜬다면 while문 탈출
-                    System.out.println("From " + inputname + ": " + inputMsg); //서버에서 보낸 메세지 읽기
+                    if (receivePacket.getHeader().getType() == PacketType.SERVER) { //서버에서 보낸 메세지 읽기
+                        String inputMsg = receivePacket.getBody().getMessage();
+                        String inputname = receivePacket.getBody().getNickname();
+                        System.out.println("From " + inputname + ": " + inputMsg);
+                    } else if (receivePacket.getHeader().getType() == PacketType.DISCONNECT) { // 연결해제 메세지 전송받음
+                        receivePacket.getBody().getMessage();
+                        break;
+                    }
                 }
             }
         } catch (IOException | ClassNotFoundException e) {

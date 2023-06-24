@@ -32,25 +32,28 @@ public class ServerThread extends Thread {
         String name = null;
         Packet serverPacket = null;
         Packet receivedPacket = null;
-        serverPacket = new Packet(new PacketHeader("Server"), new PacketBody()); // 서버의 전체공지 패킷 따로 생성
+        Packet sendAllPacket = null;
         try {
             receivedPacket = (Packet) in.readObject(); // 최초1회는 클라이언트 이름 수신
-            name = receivedPacket.getHeader().getSender(); // 닉네임 가져오기.
-            System.out.println("[" + name + " Connected]");
-            serverPacket.getBody().setMessage(name + " has entered.");
-            sendAll(serverPacket); //모두에게 보내기
-
+            if (receivedPacket.getHeader().getType() == PacketType.CONNECT) {
+                name = receivedPacket.getBody().getNickname();
+                System.out.println("[" + name + " Connected]");
+                serverPacket = new Packet(PacketType.SERVER, name + " has entered.", "SERVER");
+                sendAll(serverPacket);// 접속했다고 모두에게 보내기.
+            }
+            // -----------------------------------------------//
             while (in != null) { // 다음 대화내용 받아내기.
                 receivedPacket = (Packet) in.readObject();
                 String inputMsg = receivedPacket.getBody().getMessage();
                 if ("quit".equals(inputMsg)) break; //quit가 들어오면 while문 벗어남
-                sendAll(receivedPacket); //대화내용 출력
+                sendAllPacket = new Packet(PacketType.CLIENT, inputMsg, name);
+                sendAll(sendAllPacket); //대화내용 출력
             }
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("[" + name + "Disconnected]");
         } finally {
-            serverPacket.getBody().setMessage(name + " has left the chatroom.");
-            sendAll(serverPacket); //누군가 나가면 클라이언트 모두가 볼수있는 메세지
+            Packet DisconnectPacket = new Packet(PacketType.DISCONNECT, "", name);
+            sendAll(DisconnectPacket); //누군가 나가면 클라이언트 모두가 볼수있는 메세지
             list.remove(out);
             try {
                 socket.close();
