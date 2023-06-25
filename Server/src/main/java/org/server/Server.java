@@ -14,7 +14,7 @@ public class Server {
         ServerSocket serverSocket = null;
         Socket socket = null;
         try {
-            serverSocket = new ServerSocket(8000); // 포트번호와 서버 소켓 생성
+            serverSocket = new ServerSocket(9351); // 포트번호와 서버 소켓 생성
             while (true) {
                 System.out.println("[Client Waiting]");
                 socket = serverSocket.accept(); //클라이언트 연결 수락
