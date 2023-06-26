@@ -11,14 +11,13 @@ import static org.share.ToConvert.toPacket;
 
 public class ServerThread extends Thread {
     static final int MAXBUFFERSIZE = 1024;
-    //static List<OutputStream> list = //PrintWriter는 다양한 자료형을 출력하기 위한 메서드, 다중 클라이언트에게 메세지를 전송하는데 사용
-            //Collections.synchronizedList(new ArrayList<OutputStream>());
-    static Map<String, OutputStream> map = Collections.synchronizedMap(new HashMap<String, OutputStream>());
+    static Map<String, OutputStream> clientMap = Collections.synchronizedMap(new HashMap<String, OutputStream>());
 
-    Socket socket = null;
-    InputStream in = null; //문자열 기반의 입력을 처라히가 위한 클래스. 주로 텍스트파일이나 네트워크에서의 입력읽어오는데 사용
-    OutputStream out = null; //문자열 기반의 출력을 처리하기 위한 클래스. 주로 텍스트파일이나 네트워크로의 출력 담당.
+    private Socket socket;
+    private InputStream in; //문자열 기반의 입력을 처라히가 위한 클래스. 주로 텍스트파일이나 네트워크에서의 입력읽어오는데 사용
+    private OutputStream out; //문자열 기반의 출력을 처리하기 위한 클래스. 주로 텍스트파일이나 네트워크로의 출력 담당.
     //클라이언트 객체 한명한명
+    private String clientName;
 
     public ServerThread(Socket socket) {
         this.socket = socket;
@@ -33,36 +32,38 @@ public class ServerThread extends Thread {
     @Override
     public void run() {
         String name = null;
-        Packet serverPacket = null;
-        Packet receivePacket = null;
-        Packet sendAllPacket = null;
-        byte[] receiveData = new byte[MAXBUFFERSIZE];
-        int nReadSize = 0;
         try {
-            nReadSize = in.read(receiveData);// 최초1회는 클라이언트 이름 수신
-            receivePacket = toPacket(receiveData);
-            if (receivePacket.getHeader().getType() == PacketType.CONNECT) {
-                name = receivePacket.getBody().getNickname();
-                System.out.println("[" + name + " Connected]");
-                map.put(name, out);
-                serverPacket = new Packet(PacketType.SERVER, name + " has entered.", "SERVER");
-                sendAll(serverPacket);// 접속했다고 모두에게 보내기.
-            }
+            connectClient();
+            sendAllMessage(PacketType.SERVER,clientName + " has entered.","SERVER");
+//            nReadSize = in.read(receiveData);// 최초1회는 클라이언트 이름 수신
+//            receivePacket = toPacket(receiveData);
+//            if (receivePacket.getHeader().getType() == PacketType.CONNECT) {
+//                name = receivePacket.getBody().getNickname();
+//                System.out.println("[" + name + " Connected]");
+//                clientMap.put(name, out);
+//                serverPacket = new Packet(PacketType.SERVER, name + " has entered.", "SERVER");
+//                sendAll(serverPacket);// 접속했다고 모두에게 보내기.
+//            }
             // -----------------------------------------------//
-            while (in != null) { // 다음 대화내용 받아내기.
-                nReadSize = in.read(receiveData);
-                receivePacket = toPacket(receiveData);
-                String inputMsg = receivePacket.getBody().getMessage();
-                if ("quit".equals(inputMsg)) break; //quit가 들어오면 while문 벗어남
-                sendAllPacket = new Packet(PacketType.CLIENT, inputMsg, name);
-                sendAll(sendAllPacket); //대화내용 출력
+            while (true) { // 다음 대화내용 받아내기.
+                byte[] buffer = new byte[MAXBUFFERSIZE];
+                int length = in.read(buffer);
+                Packet packet = null;
+                if (length > 0) {
+                    packet = toPacket(buffer);
+                    sendAllMessage(packet.getHeader().getType(),packet.getBody().getMessage(),packet.getBody().getNickname());
+                }
+                name = packet.getBody().getNickname();
+                String inputMsg = packet.getBody().getMessage();
+                if ("quit".equals(inputMsg)){
+                    sendAllMessage(PacketType.DISCONNECT,"",name);
+                    break; //quit가 들어오면 while문 벗어남
+                }
             }
         } catch (IOException e) {
             System.out.println("[" + name + "Disconnected]");
         } finally {
-            Packet DisconnectPacket = new Packet(PacketType.DISCONNECT, "", name);
-            sendAll(DisconnectPacket); //누군가 나가면 클라이언트 모두가 볼수있는 메세지
-            map.remove(name);
+            clientMap.remove(name);
             try {
                 socket.close();
             } catch (IOException e) {
@@ -72,27 +73,41 @@ public class ServerThread extends Thread {
         System.out.println("[" + name + " Disconnected]"); //서버관리자가 누군가 나가면 볼수있는 메세지
     }
 
-    private void sendAll(Packet packet) { // 모두에게 전송
+    private void sendAllMessage(PacketType packetType, String message, String nickname) {
+        Packet packet = new Packet(packetType,message,nickname);
         byte[] data = toByteArray(packet);
         try {
+            for (Map.Entry<String, OutputStream> entry : clientMap.entrySet()) {
+                String receiverName = entry.getKey();
+                OutputStream clientStream = entry.getValue();
 
-            for (Map.Entry<String, OutputStream> entry : map.entrySet()) {
-                if(entry.getKey().equals(packet.getBody().getNickname())) { // 자기가 보낸 메세지는 올필요가 없기때문에 continue
-                    if(packet.getHeader().getType() == PacketType.DISCONNECT) { //디스커넥트 타입은 자기자신한테도 전송해야함.
-                        entry.getValue().write(data);
+                // 메시지를 보낸 클라이언트와 수신 클라이언트의 이름이 다를 때에만 메시지를 전송합니다.
+                if (!receiverName.equals(nickname) || packetType == PacketType.DISCONNECT) {
+                    try {
+                        clientStream.write(data);
+                        clientStream.flush();
+                    } catch (IOException e) {
+                        // 클라이언트와의 연결이 끊어진 경우, 해당 클라이언트를 제거합니다.
+                        clientMap.remove(receiverName);
+                        System.out.println("[" + receiverName + " Disconnected]");
                     }
-                    continue;
-                } else{
-                    entry.getValue().write(data);
                 }
             }
-            for (OutputStream out : map.values()) {
-                out.flush(); //출력 스트림에 대기중인 모든 데이터를 강제로 출력하는 메서드. (버퍼를 비워줌)
-            }
-        } catch (IOException e) {
-            System.out.println("SendAll Error");
+        } catch (ConcurrentModificationException e) {
+            e.printStackTrace();
         }
-
+    }
+    private void connectClient() throws IOException{
+        byte[] buffer = new byte[MAXBUFFERSIZE];
+        int length = in.read(buffer);
+        if(length > 0){
+            Packet packet = toPacket(buffer);
+            if(packet.getHeader().getType() == PacketType.CONNECT){
+                clientName = packet.getBody().getNickname();
+                System.out.println("[" + clientName + " Connected]");
+                clientMap.put(clientName, out);
+            }
+        }
     }
 
 }

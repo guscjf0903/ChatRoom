@@ -9,7 +9,8 @@ import java.util.Scanner;
 import static org.share.ToConvert.toPacket;
 
 public class Client {
-    static final int MAXBUFFERSIZE = 1024;
+    private final int MAXBUFFERSIZE = 1024;
+    private static final int SERVER_PORT = 9351;
 
     public static void main(String[] args) {
         Client client = new Client();
@@ -19,14 +20,12 @@ public class Client {
     public void start() {
 
         Socket socket = null;
-        InputStream in = null;
-        Packet sendPacket = null;
-        Packet receivePacket = null;
-        byte[] receiveData = new byte[MAXBUFFERSIZE];
-        int nReadSize = 0;
+        InputStream in;
+        Packet sendPacket;
+        Packet receivePacket;
         Scanner scanner = new Scanner(System.in);
         try {
-            socket = new Socket("localhost", 9351);
+            socket = new Socket("localhost", SERVER_PORT);
             System.out.print("Please enter your name : ");
             String name = scanner.nextLine();
             sendPacket = new Packet(PacketType.CONNECT, "", name);
@@ -36,21 +35,19 @@ public class Client {
 
             in = socket.getInputStream();
             while (true) {
-                nReadSize = in.read(receiveData);
-                receivePacket = toPacket(receiveData);
+                byte[] buffer = new byte[MAXBUFFERSIZE];
+                int length = in.read(buffer);
 
-                if (receivePacket != null) {
-                    if (receivePacket.getHeader().getType() == PacketType.SERVER || receivePacket.getHeader().getType() == PacketType.CLIENT) { //서버에서 보낸 메세지 읽기
-                        String inputMsg = receivePacket.getBody().getMessage();
-                        String inputname = receivePacket.getBody().getNickname();
-                        System.out.println("From " + inputname + ": " + inputMsg);
-                    } else if (receivePacket.getHeader().getType() == PacketType.DISCONNECT) { // 연결해제 메세지 전송받음
+                if (length > 0) {
+                    receivePacket = toPacket(buffer);
+                    packetCheck(receivePacket);
+                    if (receivePacket.getHeader().getType() == PacketType.DISCONNECT) { // 디스커넥트해야 될 스레드는 braek
                         if(receivePacket.getBody().getNickname().equals(name)){
                             break;
                         }
                         String inputMsg = receivePacket.getBody().getMessage();
                         String inputname = "SERVER";
-                        System.out.println("From " + inputname + ": " + inputMsg);
+                        System.out.println("[" + inputname + "] : " + inputMsg);
                     }
                 }
             }
@@ -62,9 +59,19 @@ public class Client {
                     socket.close();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("[IOException]");
             }
         }
         System.out.println("[End Chat room]");
     }
+    private void packetCheck(Packet packet){
+        if (packet.getHeader().getType() == PacketType.SERVER || packet.getHeader().getType() == PacketType.CLIENT){
+            String inputName = packet.getBody().getNickname();
+            String inputMsg = "["+ inputName +"] : " + packet.getBody().getMessage();
+            System.out.println(inputMsg);
+        }
+    }
+
+
 }
+
