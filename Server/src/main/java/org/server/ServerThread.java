@@ -6,8 +6,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.*;
 
-import static org.share.ToConvert.toByteArray;
-import static org.share.ToConvert.toPacket;
 
 public class ServerThread extends Thread {
     static final int MAXBUFFERSIZE = 1024;
@@ -35,22 +33,13 @@ public class ServerThread extends Thread {
         try {
             connectClient();
             sendAllMessage(PacketType.SERVER,clientName + " has entered.","SERVER");
-//            nReadSize = in.read(receiveData);// 최초1회는 클라이언트 이름 수신
-//            receivePacket = toPacket(receiveData);
-//            if (receivePacket.getHeader().getType() == PacketType.CONNECT) {
-//                name = receivePacket.getBody().getNickname();
-//                System.out.println("[" + name + " Connected]");
-//                clientMap.put(name, out);
-//                serverPacket = new Packet(PacketType.SERVER, name + " has entered.", "SERVER");
-//                sendAll(serverPacket);// 접속했다고 모두에게 보내기.
-//            }
-            // -----------------------------------------------//
+
             while (true) { // 다음 대화내용 받아내기.
                 byte[] buffer = new byte[MAXBUFFERSIZE];
                 int length = in.read(buffer);
                 Packet packet = null;
                 if (length > 0) {
-                    packet = toPacket(buffer);
+                    packet = new PacketConversion(buffer).byteToPacket();
                     sendAllMessage(packet.getHeader().getType(),packet.getBody().getMessage(),packet.getBody().getNickname());
                 }
                 name = packet.getBody().getNickname();
@@ -75,7 +64,7 @@ public class ServerThread extends Thread {
 
     private void sendAllMessage(PacketType packetType, String message, String nickname) {
         Packet packet = new Packet(packetType,message,nickname);
-        byte[] data = toByteArray(packet);
+        byte[] data = new ByteConversion(packet).packetToByte();
         try {
             for (Map.Entry<String, OutputStream> entry : clientMap.entrySet()) {
                 String receiverName = entry.getKey();
@@ -101,7 +90,7 @@ public class ServerThread extends Thread {
         byte[] buffer = new byte[MAXBUFFERSIZE];
         int length = in.read(buffer);
         if(length > 0){
-            Packet packet = toPacket(buffer);
+            Packet packet = new PacketConversion(buffer).byteToPacket();
             if(packet.getHeader().getType() == PacketType.CONNECT){
                 clientName = packet.getBody().getNickname();
                 System.out.println("[" + clientName + " Connected]");

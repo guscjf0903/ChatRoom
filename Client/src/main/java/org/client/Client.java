@@ -6,8 +6,6 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 
-import static org.share.ToConvert.toPacket;
-
 public class Client {
     private final int MAXBUFFERSIZE = 1024;
     private static final int SERVER_PORT = 9351;
@@ -37,10 +35,9 @@ public class Client {
             while (true) {
                 byte[] buffer = new byte[MAXBUFFERSIZE];
                 int length = in.read(buffer);
-
                 if (length > 0) {
-                    receivePacket = toPacket(buffer);
-                    packetCheck(receivePacket);
+                    receivePacket = new PacketConversion(buffer).byteToPacket();
+                    packetCheck(receivePacket); //Server나 CLient 타입이면 대화형식 바꿈
                     if (receivePacket.getHeader().getType() == PacketType.DISCONNECT) { // 디스커넥트해야 될 스레드는 braek
                         if(receivePacket.getBody().getNickname().equals(name)){
                             break;
