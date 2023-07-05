@@ -31,8 +31,8 @@ public class ServerThread extends Thread {
     public void run() {
         String name = null;
         try {
+
             connectClient();
-            sendAllMessage(PacketType.SERVER,clientName + " has entered.","SERVER");
 
             while (true) { // 다음 대화내용 받아내기.
                 byte[] buffer = new byte[MAXBUFFERSIZE];
@@ -45,7 +45,7 @@ public class ServerThread extends Thread {
                 name = packet.getBody().getNickname();
                 String inputMsg = packet.getBody().getMessage();
                 if ("quit".equals(inputMsg)){
-                    sendAllMessage(PacketType.DISCONNECT,"",name);
+                    sendAllMessage(ClientPacketType.DISCONNECT,"",name);
                     break; //quit가 들어오면 while문 벗어남
                 }
             }
@@ -62,8 +62,8 @@ public class ServerThread extends Thread {
         System.out.println("[" + name + " Disconnected]"); //서버관리자가 누군가 나가면 볼수있는 메세지
     }
 
-    private void sendAllMessage(PacketType packetType, String message, String nickname) {
-        Packet packet = new Packet(packetType,message,nickname);
+    private void sendAllMessage(ClientPacketType clientPacketType, String message, String nickname) {
+        Packet packet = new Packet(clientPacketType,message,nickname);
         byte[] data = new ByteConversion(packet).packetToByte();
         try {
             for (Map.Entry<String, OutputStream> entry : clientMap.entrySet()) {
@@ -71,7 +71,7 @@ public class ServerThread extends Thread {
                 OutputStream clientStream = entry.getValue();
 
                 // 메시지를 보낸 클라이언트와 수신 클라이언트의 이름이 다를 때에만 메시지를 전송합니다.
-                if (!receiverName.equals(nickname) || packetType == PacketType.DISCONNECT) {
+                if (!receiverName.equals(nickname) || clientPacketType == ClientPacketType.DISCONNECT) {
                     try {
                         clientStream.write(data);
                         clientStream.flush();
@@ -91,11 +91,29 @@ public class ServerThread extends Thread {
         int length = in.read(buffer);
         if(length > 0){
             Packet packet = new PacketConversion(buffer).byteToPacket();
-            if(packet.getHeader().getType() == PacketType.CONNECT){
+            if(packet.getHeader().getType() == ClientPacketType.CONNECT){
                 clientName = packet.getBody().getNickname();
+                if(isDuplicateName(clientName)){
+                    sendErrorMessage("Name already exists. Please enter your name again.", "TEST"); //-----------------------
+                    connectClient();
+                }
                 System.out.println("[" + clientName + " Connected]");
                 clientMap.put(clientName, out);
+                sendAllMessage(ClientPacketType.SERVER,clientName + " has entered.","SERVER");
             }
+        }
+    }
+    private boolean isDuplicateName(String name){
+        return clientMap.containsKey(name);
+    }
+    private void sendErrorMessage(String message, String nickname){
+        Packet packet = new Packet(ClientPacketType.EXCEPTION, message, nickname);
+        byte[] data = new ByteConversion(packet).packetToByte();
+        try {
+            out.write(data);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

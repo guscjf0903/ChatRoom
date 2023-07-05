@@ -11,11 +11,11 @@ public class PacketConversion {
     }
 
     public Packet byteToPacket(){
-        String type = new String(bytes,0,10).trim();
-        int length = byteArrayToInt(bytes,11,14);
-        String name = new String(bytes,15,40).trim();
-        String message = new String(bytes,60,length);
-        convertedPacket = new Packet(PacketType.valueOf(type),message,name);
+        int type = byteArrayToInt(bytes,0,3);
+        int length = byteArrayToInt(bytes,4,4);
+        String name = new String(bytes,8,32).trim();
+        String message = new String(bytes,40,length);
+        convertedPacket = new Packet(ClientPacketType.clientFindByValue(type),message,name);
         return convertedPacket;
     }
 
@@ -26,8 +26,6 @@ public class PacketConversion {
         }
         return value;
     }
-
-
 
 
 }

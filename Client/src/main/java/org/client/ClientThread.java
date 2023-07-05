@@ -30,7 +30,7 @@ public class ClientThread extends Thread {
             while (true) { //채팅방 시작.
                 message = scanner.nextLine();
                 if (message != null) {
-                    packet = new Packet(PacketType.CLIENT, message, name);
+                    packet = new Packet(ClientPacketType.CLIENT, message, name);
                     data = new ByteConversion(packet).packetToByte();
                     out.write(data);
                     out.flush();
